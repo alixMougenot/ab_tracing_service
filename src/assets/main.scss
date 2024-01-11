@@ -1,4 +1,4 @@
-@import "./base.css";
+@import './base.css';
 
 // scss-docs-start theme-color-variables
 $primary: var(--vt-c-purple) !default;
@@ -77,11 +77,12 @@ a {
 }
 
 input,
+textarea,
 select {
-  &:focus-visible {
-    border: none;
-    outline: none;
-  }
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
 }
 
 @media (hover: hover) {

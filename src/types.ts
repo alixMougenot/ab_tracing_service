@@ -3,27 +3,68 @@
 import _ from 'lodash'
 
 export type ID = string
-export type TIME = string
+export type DATE = string
 
 // Types
 
 export enum Visibility {
-  PUBLIC_FACING,
-  INTERNAL
+  PublicFacing = 'PUBLIC_FACING',
+  Internal = 'INTERNAL'
 }
 
 export enum AquisitionType {
-  GROWN,
-  PURCHASED,
-  GATHERED,
-  HOME_MADE
+  Grown = 'GROWN',
+  Purchased = 'PURCHASED',
+  Gathered = 'GATHERED',
+  HomeMade = 'HOME_MADE'
 }
 
 export enum ReproductiveMaterialType {
-  SEED,
-  CUTTING,
-  GRAFTING
+  Seed = 'SEED',
+  Cutting = 'CUTTING',
+  Grafting = 'GRAFTING'
 }
+
+export const VisibilityOptions = Object.values(Visibility)
+  .filter((v) => typeof v === 'string')
+  .map((v) => {
+    switch (v) {
+      case 'PUBLIC_FACING':
+        return { value: v, label: 'Public (Visible to anyone with the QRCode)' }
+      case 'INTERNAL':
+        return { value: v, label: 'Internal (Only visible to me)' }
+    }
+  })
+
+export const AquisitionOptions = Object.values(AquisitionType)
+  .filter((v) => typeof v === 'string')
+  .map((v) => {
+    switch (v) {
+      case 'GROWN':
+        return { value: v, label: 'Grow on property' }
+      case 'PURCHASED':
+        return { value: v, label: 'Purchased' }
+      case 'GATHERED':
+        return { value: v, label: 'Gathered in nature' }
+      case 'HOME_MADE':
+        return { value: v, label: 'Home made' }
+    }
+  })
+
+export const PlantAquisitionOptions = AquisitionOptions.filter((v) => v && v.value !== 'HOME_MADE')
+
+export const ReproductiveMaterialOptions = Object.values(ReproductiveMaterialType)
+  .filter((v) => typeof v === 'string')
+  .map((v) => {
+    switch (v) {
+      case 'SEED':
+        return { value: v, label: 'Seed' }
+      case 'CUTTING':
+        return { value: v, label: 'Cutting' }
+      case 'GRAFTING':
+        return { value: v, label: 'Grafting' }
+    }
+  })
 
 export type GatheringPlace = {
   id: ID
@@ -35,7 +76,7 @@ export type GatheringPlace = {
 }
 
 export type GatheringPlaceEdit = Partial<GatheringPlace>
-export type GatheringPlaceCreation = Exclude<GatheringPlace, 'id'>
+export type GatheringPlaceCreation = Omit<GatheringPlace, 'id'>
 
 export type SupplyInfo = {
   id: ID
@@ -48,7 +89,7 @@ export type SupplyInfo = {
 }
 
 export type SupplyInfoEdit = Partial<SupplyInfo>
-export type SupplyInfoCreation = Exclude<SupplyInfo, 'id'>
+export type SupplyInfoCreation = Omit<SupplyInfo, 'id'>
 
 export type GrowingMaterial = {
   id: ID
@@ -58,7 +99,7 @@ export type GrowingMaterial = {
   isOrganicCompliant: boolean
   quantity: number
   unit: string
-  creationDate: Date
+  creationDate: DATE
   productionSteps: ID[]
   aquisitionType: AquisitionType
   aquisitionPlaces: ID[]
@@ -66,7 +107,7 @@ export type GrowingMaterial = {
 }
 
 export type GrowingMaterialEdit = Partial<GrowingMaterial>
-export type GrowingMaterialCreation = Exclude<GrowingMaterial, 'id'>
+export type GrowingMaterialCreation = Omit<GrowingMaterial, 'id'>
 
 export type PlantTreatment = {
   id: ID
@@ -76,7 +117,7 @@ export type PlantTreatment = {
   isOrganicCompliant: boolean
   quantity: number
   unit: string
-  creationDate: Date
+  creationDate: DATE
   homeProductionIngredients: ID[]
   aquisitionType: AquisitionType
   aquisitionPlaces: ID[]
@@ -84,7 +125,7 @@ export type PlantTreatment = {
 }
 
 export type PlantTreatmentEdit = Partial<PlantTreatment>
-export type PlantTreatmentCreation = Exclude<PlantTreatment, 'id'>
+export type PlantTreatmentCreation = Omit<PlantTreatment, 'id'>
 
 export type PlantReproductionMaterial = {
   id: ID
@@ -94,7 +135,7 @@ export type PlantReproductionMaterial = {
   visibility: Visibility
   notes: string
   isOrganic: boolean
-  productionDate: Date
+  productionDate: DATE
   quantity: number
   unit: string
   aquisitionType: AquisitionType
@@ -106,7 +147,7 @@ export type PlantReproductionMaterial = {
 }
 
 export type PlantReproductionMaterialEdit = Partial<PlantReproductionMaterial>
-export type PlantReproductionMaterialCreation = Exclude<PlantReproductionMaterial, 'id'>
+export type PlantReproductionMaterialCreation = Omit<PlantReproductionMaterial, 'id'>
 
 export type Plant = {
   id: ID
@@ -115,7 +156,7 @@ export type Plant = {
   notes: string
   visibility: Visibility
   isOrganic: boolean
-  plantingDate: Date
+  plantingDate: DATE
   isStockPlant: boolean
   quantity: number
   unit: string
@@ -129,7 +170,7 @@ export type Plant = {
 }
 
 export type PlantEdit = Partial<Plant>
-export type PlantCreation = Exclude<Plant, 'id'>
+export type PlantCreation = Omit<Plant, 'id'>
 
 //// Copy opperators ////
 

@@ -1,6 +1,7 @@
 <!-- Copyright (c) 2023, Alix Mougenot (Au pied des Arbres), alix.mougenot@gmail.com -->
 <!-- See license file. -->
 <script setup lang="ts">
+import PlantViewer from '@/components/PlantViewer.vue'
 import { plantsKey } from '@/logic/provide'
 import { inject } from 'vue'
 
@@ -9,7 +10,12 @@ const allPlants = inject(plantsKey)
 <template>
   <div class="main-container">
     <div v-if="allPlants">
-      <template v-for="plant of allPlants.list" :key="plant.id"> <br />{{ plant }} </template>
+      <br />
+      <PlantViewer />
+      <template v-for="plant of allPlants.list" :key="plant.id">
+        <br />
+        <PlantViewer :modelValue="plant" />
+      </template>
     </div>
   </div>
 </template>

@@ -89,7 +89,7 @@ const mutateGatheringPlace = useMutation(
 
 const createGatheringPlace = useMutation(
   gql`
-    mutation createGatheringPlace($gatheringPlace: GatheringPlaceCreation!) {
+    mutation createGatheringPlace($gatheringPlace: GatheringPlaceInput!) {
       createGatheringPlace(gatheringPlace: $gatheringPlace)
     }
   `,
@@ -135,7 +135,7 @@ const supplyInfo = computed(() => {
 
 const mutateSupplyInfo = useMutation(
   gql`
-    mutation editSupplyInfo($id: String!, $udpate: SupplyInfoEdit!) {
+    mutation editSupplyInfo($id: ID!, $udpate: SupplyInfoInput!) {
       updateSupplyInfo(id: $id, update: $udpate)
     }
   `,
@@ -144,7 +144,7 @@ const mutateSupplyInfo = useMutation(
 
 const createSupplyInfo = useMutation(
   gql`
-    mutation createSupplyInfo($supplyInfo: SupplyInfoCreation!) {
+    mutation createSupplyInfo($supplyInfo: SupplyInfoInput!) {
       createSupplyInfo(supplyInfo: $supplyInfo)
     }
   `,
@@ -177,7 +177,7 @@ const growingMaterialQuery = useQuery(gql`
       quantity
       unit
       creationDate
-      productionSteps
+      homeProductionIngredients
       aquisitionType
       aquisitionPlaces
       aquisitionPurshaseInfo
@@ -196,7 +196,7 @@ const growingMaterials = computed(() => {
 
 const mutateGrowingMaterial = useMutation(
   gql`
-    mutation editGrowingMaterial($id: String!, $update: GrowingMaterialEdit!) {
+    mutation editGrowingMaterial($id: ID!, $update: GrowingMaterialInput!) {
       updateGrowingMaterial(id: $id, update: $update)
     }
   `,
@@ -205,7 +205,7 @@ const mutateGrowingMaterial = useMutation(
 
 const createGrowingMaterial = useMutation(
   gql`
-    mutation createGrowingMaterial($growingMaterial: GrowingMaterialCreation!) {
+    mutation createGrowingMaterial($growingMaterial: GrowingMaterialInput!) {
       createGrowingMaterial(growingMaterial: $growingMaterial)
     }
   `,
@@ -238,7 +238,7 @@ const plantTreatmentsQuery = useQuery(gql`
       quantity
       unit
       creationDate
-      productionSteps
+      homeProductionIngredients
       aquisitionType
       aquisitionPlaces
       aquisitionPurshaseInfo
@@ -257,7 +257,7 @@ const plantTreatments = computed(() => {
 
 const mutatePlantTreatment = useMutation(
   gql`
-    mutation editPlantTreatment($id: String!, $update: PlantTreatmentEdit!) {
+    mutation editPlantTreatment($id: ID!, $update: PlantTreatmentInput!) {
       updatePlantTreatment(id: $id, update: $update)
     }
   `,
@@ -266,7 +266,7 @@ const mutatePlantTreatment = useMutation(
 
 const createPlantTreatment = useMutation(
   gql`
-    mutation createPlantTreatment($plantTreatment: PlantTreatmentCreation!) {
+    mutation createPlantTreatment($plantTreatment: PlantTreatmentInput!) {
       createPlantTreatment(plantTreatment: $plantTreatment)
     }
   `,
@@ -324,7 +324,7 @@ const plantReproductionMaterials = computed(() => {
 
 const mutatePlantReproductionMaterial = useMutation(
   gql`
-    mutation editPlantReproductionMaterial($id: String!, $update: PlantReproductionMaterialEdit!) {
+    mutation editPlantReproductionMaterial($id: ID!, $update: PlantReproductionMaterialInput!) {
       updatePlantReproductionMaterial(id: $id, update: $update)
     }
   `,
@@ -334,7 +334,7 @@ const mutatePlantReproductionMaterial = useMutation(
 const createPlantReproductionMaterial = useMutation(
   gql`
     mutation createPlantReproductionMaterial(
-      $plantReproductionMaterial: PlantReproductionMaterialCreation!
+      $plantReproductionMaterial: PlantReproductionMaterialInput!
     ) {
       createPlantReproductionMaterial(plantReproductionMaterial: $plantReproductionMaterial)
     }
@@ -391,7 +391,7 @@ const plants = computed(() => {
 
 const mutatePlant = useMutation(
   gql`
-    mutation editPlant($id: String!, $update: PlantEdit!) {
+    mutation editPlant($id: ID!, $update: PlantInput!) {
       updatePlant(id: $id, update: $update)
     }
   `,
@@ -400,7 +400,7 @@ const mutatePlant = useMutation(
 
 const createPlant = useMutation(
   gql`
-    mutation createPlant($plant: PlantCreation!) {
+    mutation createPlant($plant: PlantInput!) {
       createPlant(plant: $plant)
     }
   `,
