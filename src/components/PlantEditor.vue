@@ -8,25 +8,28 @@ import {
   VisibilityOptions,
   diff
 } from '@/types'
-import { inject, ref } from 'vue'
+import { inject, ref, watch } from 'vue'
 import { mutatePlantKey, createPlantKey } from '@/logic/provide'
 
-const { modelValue } = defineProps<{ modelValue?: Plant }>()
+const props = defineProps<{ modelValue?: Plant }>()
+const modelValue = props.modelValue
+
 const emit = defineEmits<{
   (e: 'update:modelValue', value: Plant): void
+  (e: 'cancel'): void
 }>()
 
 const placeHolder: PlantCreation = {
   name: '',
   latinName: '',
   notes: '',
-  visibility: Visibility.internal,
+  visibility: Visibility.Internal,
   isOrganic: true,
   plantingDate: new Date().toISOString().slice(0, 10), // Only the date.
   isStockPlant: false,
   quantity: 0,
   unit: 'plants',
-  aquisitionType: AquisitionType.grown,
+  aquisitionType: AquisitionType.Grown,
   plantingSource: null,
   aquisitionPlaces: [],
   aquisitionPurshaseInfo: [],
@@ -53,10 +56,26 @@ const mutatePlant = inject(mutatePlantKey)
 const createPlant = inject(createPlantKey)
 
 const plant = ref<PlantCreation>(placeHolder)
-if (modelValue != null) {
-  plant.value = { ...modelValue }
-  plant.value = handleDatesForEdit(plant.value)
+
+function reset() {
+  if (props.modelValue != null) {
+    plant.value = { ...props.modelValue }
+    plant.value = handleDatesForEdit(plant.value)
+  } else {
+    plant.value = { ...placeHolder }
+  }
 }
+
+if (modelValue != undefined) {
+  watch(
+    () => props.modelValue,
+    () => {
+      reset()
+    }
+  )
+}
+
+reset()
 
 const onSubmit = () => {
   if (mutatePlant && modelValue) {
@@ -73,6 +92,10 @@ const onSubmit = () => {
     createPlant(tosave)
     plant.value = handleDatesForEdit(plant.value)
   }
+}
+
+const onCancel = () => {
+  emit('cancel')
 }
 </script>
 
@@ -147,15 +170,15 @@ const onSubmit = () => {
       <!-- For now, I'll just use a text input where you can enter IDs separated by commas -->
 
       <section>
-        <label v-if="plant.aquisitionType == AquisitionType[AquisitionType.grown]">
+        <label v-if="plant.aquisitionType == AquisitionType.Grown">
           Used Reproductive Material (leave empty when naturally present):
           <input v-model="plant.plantingSource" type="text" />
         </label>
-        <label v-else-if="plant.aquisitionType == AquisitionType[AquisitionType.gathered]">
+        <label v-else-if="plant.aquisitionType == AquisitionType.Gathered">
           Where was it gathered:
           <input v-model="plant.aquisitionPurshaseInfo" type="text" />
         </label>
-        <label v-else-if="plant.aquisitionType == AquisitionType[AquisitionType.purchased]">
+        <label v-else-if="plant.aquisitionType == AquisitionType.Purchased">
           Where was it bougt:
           <input v-model="plant.aquisitionPurshaseInfo" type="text" />
         </label>
@@ -174,9 +197,12 @@ const onSubmit = () => {
       </section>
 
       <!-- Add other form fields here... -->
-      <button type="submit" @click.prevent="onSubmit">
-        {{ modelValue == null ? 'Create' : 'Save' }}
-      </button>
+      <div class="group right">
+        <button v-if="modelValue" type="reset" @click.prevent="onCancel">Cancel</button>
+        <button type="submit" @click.prevent="onSubmit">
+          {{ modelValue == null ? 'Create' : 'Save' }}
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -193,6 +219,10 @@ form {
     flex-direction: row;
     gap: 1.5rem;
     margin-top: 0.3rem;
+
+    &.right {
+      justify-content: flex-end;
+    }
   }
 
   section {
